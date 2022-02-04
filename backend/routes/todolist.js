@@ -46,6 +46,36 @@ function todoList(app){
             console.error(error);
         }
     });
+
+    router.put('/:id', async(req, res) =>{
+        const {id} = req.params;
+        const task = req.body;
+        console.log(id);
+        console.log(task);
+
+        try {
+            let updateTask = await taskServices.editTask(id, task);
+            res.status(201).json({
+                updateTask,
+                message: `task ${id} has been updated`,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    router.delete('/:id', async(req, res) =>{
+        const {id} = req.params;
+        try {
+            let deleteTask = await taskServices.remove(id);
+            res.status(200).json({
+                deleteTask,
+                message: 'Task deleted'
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    });
 };
 
 module.exports = todoList;

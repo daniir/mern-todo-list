@@ -48,8 +48,8 @@ class MongoLib{
             return findTask;
         } catch (error) {
             console.error(error);
-        }
-    }
+        };
+    };
 
     async createTask(collection, data){
         try {
@@ -62,6 +62,31 @@ class MongoLib{
             console.error(error.stack);
         };
     };
-}
+
+    async updateTask(collection, id, data){
+        try {
+            let db = await this.connection();
+            let update = await db.collection(collection).updateOne(
+                {_id: ObjectId(id)}, 
+                {$set: data}, 
+                { upsert: true },
+            );
+            return update.upsertedId || id;
+        } catch (error) {
+            console.error(error);
+        };
+    };
+
+    async deleteTask(collection, id){
+        try {
+            let db = await this.connection();
+            let remove = await db.collection(collection).deleteOne({_id:ObjectId(id)});
+            console.log(remove);
+            return remove;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};
 
 module.exports = { MongoLib };
