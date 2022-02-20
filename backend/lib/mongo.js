@@ -13,20 +13,17 @@ class MongoLib{
     };
 
     async connection() {
-        if(!MongoLib.connection){
-            try {
-                MongoLib.connection = await this.client.connect();
-                console.log("Connected with Mongo");
-                return this.client.db(this.dbname);
-            } catch (error) {
-                console.error(error.stack);
-            }
-            // finally{
-            //     MongoLib.connection = await this.client.close();
-            // }
-        };
+        if (MongoLib.connection) return MongoLib.connection;
 
-        return this.client.db(this.dbname);
+        try {
+            const dbClient = await this.client.connect();
+            MongoLib.connection = await dbClient.db(this.dbname);
+        } catch (error) {
+            console.error('Error: ', error);
+            process.exit(1);
+        }
+
+        return MongoLib.connection;
     };
 
     async findAll(collection){
