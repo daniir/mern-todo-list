@@ -30,10 +30,9 @@ class MongoLib{
         try {
             let db = await this.connection();
             let findNotes = await db.collection(collection).find().toArray();
-            //console.log("findNotes ", findNotes);
             return findNotes;
         } catch (error) {
-            console.error(error.stack);
+            console.error('Error: ', error);
         };
     };
 
@@ -44,7 +43,7 @@ class MongoLib{
             console.log("id task ", findTask);
             return findTask;
         } catch (error) {
-            console.error(error);
+            console.error('Error: ', error);
         };
     };
 
@@ -52,11 +51,9 @@ class MongoLib{
         try {
             let db = await this.connection();
             let newTask =  await db.collection(collection).insertOne(data);
-            //console.log("newTask ", newTask);
-            //console.log("id ", newTask.insertedId);
             return newTask.insertedId;
         } catch (error) {
-            console.error(error.stack);
+            console.error('Error: ', error);
         };
     };
 
@@ -70,7 +67,7 @@ class MongoLib{
             );
             return update.upsertedId || id;
         } catch (error) {
-            console.error(error);
+            console.error('Error: ', error);
         };
     };
 
@@ -78,10 +75,9 @@ class MongoLib{
         try {
             let db = await this.connection();
             let remove = await db.collection(collection).deleteOne({_id:ObjectId(id)});
-            console.log(remove);
             return remove;
         } catch (error) {
-            console.error(error);
+            console.error('Error: ', error);
         }
     };
 };
