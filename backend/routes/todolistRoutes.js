@@ -1,9 +1,9 @@
 const express = require('express');
-const { TaskServices } = require('../services/tasks');
+const { TaskServices } = require('../services/tasksServices');
 
 const taskServices = new TaskServices();
 
-function todoList(app){
+function todolistRoutes(app){
     const router = express.Router();
     app.use('/api/todo-list', router);
 
@@ -21,7 +21,6 @@ function todoList(app){
 
     router.get('/:id', async(req, res)=>{
         const id = req.params;
-        console.log(id);
         try {
             let task = await taskServices.getTask(id);
             res.status(200).json({
@@ -35,7 +34,7 @@ function todoList(app){
 
     router.post('/', async(req, res)=>{
         const {body: task} = req;
-        console.log(task);
+        task.state = false
         try {
             let newTask = await taskServices.insertTask(task);
             res.status(200).json({
@@ -50,9 +49,6 @@ function todoList(app){
     router.put('/:id', async(req, res) =>{
         const {id} = req.params;
         const task = req.body;
-        console.log(id);
-        console.log(task);
-
         try {
             let updateTask = await taskServices.editTask(id, task);
             res.status(201).json({
@@ -78,4 +74,4 @@ function todoList(app){
     });
 };
 
-module.exports = todoList;
+module.exports = {todolistRoutes};

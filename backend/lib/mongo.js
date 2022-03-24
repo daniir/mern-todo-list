@@ -1,15 +1,15 @@
 const {MongoClient, ObjectId} = require('mongodb');
-const config = require('../config/index')
+const {db_user, db_pass, db_host, db_name} = require('../config/index')
 
-const USER = encodeURIComponent(config.db_user);
-const PASS = encodeURIComponent(config.db_pass);
+const USER = encodeURIComponent(db_user);
+const PASS = encodeURIComponent(db_pass);
 
-const mongoUri = `mongodb+srv://${USER}:${PASS}@cluster0.1rs8f.mongodb.net/${config.db_name}?retryWrites=true&w=majority`;
+const mongoUri = `mongodb+srv://${USER}:${PASS}@${db_host}/${db_name}?retryWrites=true&w=majority`;
 
 class MongoLib{
     constructor(){
         this.client = new MongoClient(mongoUri);
-        this.dbname = config.db_name;
+        this.dbname = db_name;
     };
 
     async connection() {
@@ -26,7 +26,7 @@ class MongoLib{
         return MongoLib.connection;
     };
 
-    async findAll(collection){
+    async readAllDB(collection){
         try {
             let db = await this.connection();
             let findNotes = await db.collection(collection).find().toArray();
@@ -36,7 +36,7 @@ class MongoLib{
         };
     };
 
-    async findTask(collection, id){
+    async readOneDB(collection, id){
         try {
             let db = await this.connection();
             let findTask = await db.collection(collection).findOne({_id: ObjectId(id)});
@@ -47,7 +47,7 @@ class MongoLib{
         };
     };
 
-    async createTask(collection, data){
+    async createDB(collection, data){
         try {
             let db = await this.connection();
             let newTask =  await db.collection(collection).insertOne(data);
@@ -57,7 +57,7 @@ class MongoLib{
         };
     };
 
-    async updateTask(collection, id, data){
+    async updateDB(collection, id, data){
         try {
             let db = await this.connection();
             let update = await db.collection(collection).updateOne(
@@ -71,7 +71,7 @@ class MongoLib{
         };
     };
 
-    async deleteTask(collection, id){
+    async deleteDB(collection, id){
         try {
             let db = await this.connection();
             let remove = await db.collection(collection).deleteOne({_id:ObjectId(id)});
