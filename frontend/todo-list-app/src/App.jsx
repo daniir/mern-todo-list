@@ -14,7 +14,7 @@ function App() {
         <div className="container my-5">
           <div className="row justify-content-center">
             <div className="col">
-              <FormTasks isUpdate={isUpdate}/>
+              <FormTasks isUpdate={isUpdate} setIsUpdate={setIsUpdate}/>
             </div>
             <div className="col">
               <ListTasks setIsUpdate={setIsUpdate}/>

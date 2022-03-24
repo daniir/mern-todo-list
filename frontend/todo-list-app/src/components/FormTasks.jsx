@@ -19,8 +19,8 @@ const validateForm = (form) => {
     return error;
 };
 
-function FormTasks({isUpdate}){
-    
+function FormTasks({isUpdate, setIsUpdate}){
+
     const {
         form, 
         error, 
@@ -28,11 +28,11 @@ function FormTasks({isUpdate}){
         handleChange, 
         handleBlur,
         handleSubmit
-    } = useForm(initialData, validateForm);
+    } = useForm(initialData, isUpdate, validateForm, setIsUpdate);
 
     return(
         <div className="container">
-            <h2 className="text-center">Formulario</h2>
+            <h2 className="text-center">{isUpdate === null ? 'Crear Tarea' : 'Editar Tarea'}</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <p className="font-italic">
@@ -70,11 +70,11 @@ function FormTasks({isUpdate}){
                             </div>
                         }
                 </div>
-                <div className="d-grid gap-2d-md-flex justify-content-md-end">
+                <div className="d-grid gap-2">
                     <button className="btn btn-primary me-md-2"
                     type="submit"
                     disabled={loading ? true : false}>
-                        Crear
+                        {isUpdate === null ? 'Crear' : 'Editar'}
                     </button>
                 </div>
             </form>

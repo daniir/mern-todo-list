@@ -1,9 +1,19 @@
 import React from "react";
 import TaskContext from "../context/context";
+import axios from 'axios';
 
 function Results({setIsUpdate}){
 
-    const {tasks, deleteTask} = React.useContext(TaskContext);
+    const {tasks, deleteTask, uri} = React.useContext(TaskContext);
+
+    const deleteTaskApi = async(taskId) => {
+        try {
+            await axios.delete(`${uri}/${taskId}`);
+            deleteTask(taskId);
+        } catch (error) {
+            console.error('Error: ', error);
+        }
+    };
 
     return(
         <div className="container">
@@ -18,8 +28,8 @@ function Results({setIsUpdate}){
                 </thead>
                 <tbody>
                     {
-                        tasks.map(task => (
-                            <tr key={task._id}>
+                        tasks.map((task, index) => (
+                            <tr key={index}>
                                 <td>{task.task}</td>
                                 <td>{task.description}</td>
                                 <td>
@@ -30,7 +40,7 @@ function Results({setIsUpdate}){
                                     </button>
                                     <button 
                                         className="btn btn-danger btn-small"
-                                        onClick={() => deleteTask(task._id)}>
+                                        onClick={() => deleteTaskApi(task._id)}>
                                         Eliminar
                                     </button>
                                 </td>
