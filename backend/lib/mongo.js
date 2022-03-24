@@ -62,7 +62,7 @@ class MongoLib{
             let db = await this.connection();
             let update = await db.collection(collection).updateOne(
                 {_id: ObjectId(id)}, 
-                {$set: data}, 
+                {$set: {"task": data.task, "description": data.description}}, 
                 { upsert: true },
             );
             return update.upsertedId || id;
